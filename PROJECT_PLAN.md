@@ -1,9 +1,43 @@
 # Self-Evolving Multi-Modal Knowledge Base
 
-## 项目计划文档 (v1.0)
+## 项目计划文档 (v1.2)
 
-> **作者**: elixxih · **日期**: 2026-05-28 · **预计周期**: 4–6 周  
+> **作者**: elixxih · **日期**: 2026-05-28 · **预计周期**: 6 周（含 Week 0 准备期）  
 > **目标受众**: 个人开发 → 部门演示 → 申请云端资源
+
+---
+
+## 📑 目录
+
+- [0. TL;DR](#0-tldr)
+- [1. 需求确认（已对齐）](#1-需求确认已对齐)
+- [2. 设计原则（贯穿始终）](#2-设计原则贯穿始终)
+- [3. 系统总体架构](#3-系统总体架构)
+- [4. 技术栈选型（带理由）](#4-技术栈选型带理由)
+- [5. Cost-Aware 解析路由（核心创新）](#5-cost-aware-解析路由核心创新)
+- [6. 中间层详细设计](#6-中间层详细设计)
+- [7. 自演化机制（L3）](#7-自演化机制l3)
+- [8. 记忆层详细设计](#8-记忆层详细设计)
+- [9. 可复现性保障（被低估的关键点）](#9-可复现性保障被低估的关键点)
+- [10. 6 周路线图（带交付物）](#10-6-周路线图带交付物)
+- [11. 项目目录结构（建议）](#11-项目目录结构建议)
+- [12. 公开数据集推荐（Week 0 准备用）](#12-公开数据集推荐week-0-准备用)
+- [13. 成本预算（自费部分）](#13-成本预算自费部分)
+- [14. 风险与缓解](#14-风险与缓解)
+- [15. 演示策略（给部门看时怎么打动他们）](#15-演示策略给部门看时怎么打动他们)
+- [16. 后续迁移到公司云的路径（提前留接口）](#16-后续迁移到公司云的路径提前留接口)
+- [**17. Step-by-Step 周计划执行手册**](#17-step-by-step-周计划执行手册) 🛠️
+  - [Week 0: 准备期（3 天）](#week-0-准备期3-天预计-4-小时实际操作)
+  - [Week 1: MVP — 单文档闭环](#week-1-mvp--单文档--检索--回答闭环)
+  - [Week 2: 多模态 + Cost-Aware 路由](#week-2-多模态--cost-aware-路由)
+  - [Week 3: 检索质量优化](#week-3-检索质量优化)
+  - [Week 4: 中间层 + 自演化](#week-4-中间层--自演化)
+  - [Week 5: 记忆层 + UI](#week-5-记忆层--ui)
+  - [Week 6: 打磨 + 演示准备](#week-6-打磨--演示准备)
+- [18. 服务清单 / API 总览](#18-服务清单--api-总览)
+- [19. 待补充 / 待决策项（v1.1 再敲定）](#19-待补充--待决策项v11-再敲定)
+- [20. 我（AI 助手）能持续帮你做什么](#20-我ai-助手能持续帮你做什么)
+- [附录 A: 一句话目标](#附录-a-一句话目标)
 
 ---
 
@@ -680,17 +714,616 @@ self-evolving-kb/
 
 ---
 
-## 17. 立即可以开始的 3 件事（Week 0 Day 1）
+## 17. Step-by-Step 周计划执行手册
 
-下面是从现在到明天可以推进的具体动作：
+> 本节是 §10「6 周路线图」的**执行版**：
+> - §10 告诉你"**每周交付什么**"（战略视角）
+> - §17 告诉你"**每天具体做什么、敲什么命令、建什么文件、怎么验收**"（操作视角）
+>
+> **每周统一结构**：🎯 目标 · 📅 每日动作 · ⌨️ 关键命令 · 📦 产出文件 · ✅ 验收 · ⚠️ 常见坑 · 💰 本周成本
 
-1. **决定项目位置**：在 `D:\projects\` 或类似**本地盘**新建 `self-evolving-kb` 文件夹（**不要放 OneDrive**）
-2. **注册账号 + 充值**：
-  - OpenAI Platform（充 $20）
-  - Anthropic Console（充 $20，可选，作为 LLM 对比备份）
-  - Cohere（免费注册，拿 trial key）
-  - LangSmith（用 GitHub 登录免费版）
-3. **下载首批数据**：去 arXiv 下载 5 篇感兴趣的 CS 论文（推荐 Attention Is All You Need, BERT, GPT-3, RAG, RAPTOR）放到 `data/raw/v0/`
+---
+
+### Week 0: 准备期（3 天，预计 ~4 小时实际操作）
+
+🎯 **目标**：工具、账号、数据全到位，能跑 `import` 成功。
+
+#### 📅 Day 1 — 账号 + 数据（~1 小时）
+
+- [ ] **决定项目位置**：`D:\projects\self-evolving-kb\`（**绝对不放 OneDrive Ericsson 目录**）
+- [ ] **注册账号**（按 §18.7 顺序）：
+  - [ ] GitHub
+  - [ ] OpenAI Platform → **充值 $20**
+  - [ ] LangSmith（用 GitHub OAuth 一键登录）
+  - [ ] Cohere（拿 trial key）
+- [ ] **下载首批数据**（去 arxiv.org）：
+  - [ ] `1706.03762` — Attention Is All You Need
+  - [ ] `1810.04805` — BERT
+  - [ ] `2005.11401` — RAG (Lewis et al.)
+  - [ ] `2401.18059` — RAPTOR
+  - [ ] `2310.11511` — Self-RAG
+  - [ ] 放到 `data/raw/v0/`
+
+#### 📅 Day 2 — Python + 项目骨架（~2 小时）
+
+- [ ] 安装 **Python 3.11+**
+- [ ] 安装 **uv**（Windows PowerShell）:
+  ```powershell
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+- [ ] 初始化项目：
+  ```powershell
+  cd D:\projects
+  uv init self-evolving-kb --python 3.11
+  cd self-evolving-kb
+  git init
+  ```
+- [ ] 创建目录骨架（按 §11）：
+  ```powershell
+  mkdir src\parsers, src\splitters, src\summarizers, src\stores, src\retrievers
+  mkdir src\memory, src\evolution, src\chains, src\postprocess, src\metrics
+  mkdir src\versioning, src\feedback, src\schemas, src\processors
+  mkdir data\raw\v0, data\processed, data\snapshots
+  mkdir tests\unit, tests\integration, tests\eval
+  mkdir notebooks, docs, demo, scripts
+  ```
+- [ ] 添加核心依赖：
+  ```powershell
+  uv add langchain langchain-openai langchain-community langchain-text-splitters
+  uv add langgraph langsmith
+  uv add docling
+  uv add qdrant-client
+  uv add streamlit
+  uv add pydantic-settings python-dotenv typer
+  uv add rank-bm25 cohere
+  uv add watchdog apscheduler
+  uv add --dev pytest jupyter ragas
+  ```
+
+#### 📅 Day 3 — Docker + 配置（~1 小时）
+
+- [ ] 安装 **Docker Desktop**
+- [ ] 在项目根创建 `docker-compose.yml`：
+  ```yaml
+  services:
+    qdrant:
+      image: qdrant/qdrant:latest
+      ports:
+        - "6333:6333"
+        - "6334:6334"
+      volumes:
+        - ./data/qdrant_storage:/qdrant/storage
+  ```
+- [ ] 启动 Qdrant：
+  ```powershell
+  docker compose up -d
+  ```
+- [ ] 按 §18.6 模板创建 `.env`，填入真实 key
+- [ ] 创建 `.gitignore`：
+  ```
+  .env
+  data/raw/
+  data/processed/
+  data/snapshots/
+  data/qdrant_storage/
+  *.db
+  __pycache__/
+  .venv/
+  .ipynb_checkpoints/
+  ```
+- [ ] 首次提交：
+  ```powershell
+  git add .
+  git commit -m "chore: project skeleton (Week 0)"
+  ```
+
+#### ✅ Week 0 验收
+
+```powershell
+# 1. 依赖装好了吗
+uv run python -c "import langchain, docling, qdrant_client; print('OK')"
+
+# 2. Qdrant 在线吗
+curl http://localhost:6333
+
+# 3. PDF 在位吗
+dir data\raw\v0\
+```
+
+三个都通过 = ✅ Week 0 完成。
+
+#### ⚠️ 常见坑
+
+- Windows 路径含空格会让一些工具炸 → 项目路径用纯英文，比如 `D:\projects\`
+- Docker Desktop 首次启动很慢 → **先开 Docker 再开 IDE**
+- OpenAI 充值要 Verify 信用卡 → 留半天 buffer
+- `uv add docling` 拉 torch 慢 → 提前 `uv add torch --index-url https://download.pytorch.org/whl/cpu`
+
+#### 💰 本周成本
+
+| 项目 | 金额 |
+|---|---|
+| OpenAI 充值 | $20 |
+| 其他全免费 | $0 |
+| **小计** | **$20** |
+
+---
+
+### Week 1: MVP — 单文档 → 检索 → 回答闭环
+
+🎯 **目标**：1 份 PDF 入库 → 能问答带引用。
+
+#### 📅 Day 1–2 — Docling 解析 + 切分
+
+- [ ] 写 `src/config.py`：用 `pydantic-settings` 加载 `.env` 里所有 key
+- [ ] 写 `src/parsers/docling_parser.py`：
+  - 输入：`file_path: Path`
+  - 输出：`DoclingDocument`
+  - 核心 API：`DocumentConverter().convert(path).document`
+- [ ] 写 `src/splitters/semantic_splitter.py`：
+  - 用 Docling 自带的 `HybridChunker`
+  - tokenizer 用 tiktoken `cl100k_base`
+- [ ] 在 `notebooks/01_docling_test.ipynb` 跑通单文档
+
+#### 📅 Day 3–4 — Embedding + Qdrant
+
+- [ ] 写 `src/stores/qdrant_store.py`：
+  - 创建 collection（**dim=3072**, distance=cosine）
+  - 实现 `upsert(chunks)` 和 `search(query, top_k)`
+  - payload 含 `source / page / chunk_id / text / kb_version`
+- [ ] 写 `src/chains/basic_rag.py`（LangChain LCEL）：
+  ```
+  retriever | format_docs | prompt | llm | StrOutputParser
+  ```
+  - LLM 用 `gpt-4o-mini`，**`temperature=0`**
+
+#### 📅 Day 5 — CLI 入口
+
+- [ ] 写 `src/cli.py`（typer）：
+  - `python -m src.cli ingest <pdf_path>`
+  - `python -m src.cli query "..."`
+- [ ] 跑通 attention paper：
+  ```powershell
+  uv run python -m src.cli ingest data/raw/v0/1706.03762.pdf
+  uv run python -m src.cli query "What is multi-head attention?"
+  ```
+
+#### 📅 Day 6–7 — LangSmith + 文档 + Buffer
+
+- [ ] 启用 LangSmith trace（设环境变量 `LANGCHAIN_TRACING_V2=true`）
+- [ ] 在 [smith.langchain.com](https://smith.langchain.com) 看到完整 trace
+- [ ] 写 `README.md`：项目目的 + 如何 ingest/query
+- [ ] `git commit + push GitHub`
+
+#### 📦 本周产出文件
+
+```
+src/config.py
+src/parsers/docling_parser.py
+src/splitters/semantic_splitter.py
+src/stores/qdrant_store.py
+src/chains/basic_rag.py
+src/cli.py
+notebooks/01_docling_test.ipynb
+README.md
+```
+
+#### ✅ Week 1 验收
+
+- 至少 1 份 PDF 已入 Qdrant，`http://localhost:6333/dashboard` 能看到 collection
+- `query "..."` 能返回带页码的答案
+- LangSmith 能看到完整 trace
+
+#### ⚠️ 常见坑
+
+- Docling 首次跑要下载 ~2GB 模型 → **别 Ctrl+C**
+- Embedding 维度（3072）必须和 Qdrant collection 创建时一致
+- LangChain prompt 模板别漏 `{context}` 占位符
+- **`temperature=0` 必须设**，否则可复现性做不到
+
+#### 💰 本周成本
+
+| 项目 | 估算 |
+|---|---|
+| 建库（5 份 PDF, embedding + Docling 本地） | $0.5 |
+| 测试问答 ~30 次（gpt-4o-mini） | $1 |
+| **小计** | **~$1.5** |
+
+---
+
+### Week 2: 多模态 + Cost-Aware 路由
+
+🎯 **目标**：图片/表格/公式全进 KB；解析成本透明可控。
+
+#### 📅 Day 1–2 — 解析路由器
+
+- [ ] 写 `src/parsers/router.py`（实现 §5 路由图）：
+  - 输入：文件路径
+  - 决策树：文件类型 → Docling 置信度 → 升级到 mini / 4o
+- [ ] 写质量评估函数（Docling confidence / 文本密度 / 表格识别成功率）
+
+#### 📅 Day 3–4 — Vision + 表格
+
+- [ ] 写 `src/parsers/vision_parser.py`：
+  - 用 `gpt-4o-mini` Vision 描述图片
+  - 结构化 prompt：`[TYPE] / [SUMMARY] / [DETAILS] / [TRANSCRIBE]`
+- [ ] 写 `src/parsers/table_parser.py`：
+  - Excel/CSV → pandas → Markdown
+  - DOCX/PPTX 表格已由 Docling 提取
+- [ ] 把 Docling 抽出的 picture refs 接到 vision_parser
+
+#### 📅 Day 5 — 元数据 + 成本统计
+
+- [ ] 写 `src/schemas/chunk.py`（pydantic model，参 §6.2）
+- [ ] 写 `src/metrics/cost_tracker.py`：
+  - 每次 LLM 调用累计 USD
+  - 写入 SQLite `cost_log` 表
+  - 暴露 `get_total()` / `get_per_doc()`
+- [ ] 在 router 里调用 cost_tracker
+
+#### 📅 Day 6 — Qdrant Payload 索引
+
+- [ ] 给 `source / doc_type / page` 建 payload index（加速 metadata 过滤）
+- [ ] 用新管道全量重建 5 份 PDF 的 KB（标记 `kb_version=v0.2.0`）
+
+#### 📅 Day 7 — 多文档扩展 + Buffer
+
+- [ ] 扩展到 10 份文档（再加 5 篇 arXiv 或公开技术博客 PDF）
+- [ ] 测试图片相关问题：「Transformer 架构图里 Q/K/V 是怎么连接的？」
+
+#### 📦 本周产出文件
+
+```
+src/parsers/router.py
+src/parsers/vision_parser.py
+src/parsers/table_parser.py
+src/schemas/chunk.py
+src/metrics/cost_tracker.py
+notebooks/02_cost_routing_test.ipynb
+```
+
+#### ✅ Week 2 验收
+
+- 上传含图 PDF → 图片描述自动生成并入库
+- `python -m src.cli stats` 显示累计成本（如 $0.13）
+- 能问"那张图里 Q/K/V 是什么含义"得到准确回答
+
+#### ⚠️ 常见坑
+
+- Vision API 单价是文本的 10–20×，**记得批量合并图片请求**
+- Docling 抽图片要打开 `do_picture_classification=True`
+- 路由阈值要慢慢调，第一次很可能误升级到 4o 太多
+
+#### 💰 本周成本
+
+| 项目 | 估算 |
+|---|---|
+| 10 份文档全流程建库 | $3 |
+| 测试问答 | $2 |
+| **小计** | **~$5** |
+
+---
+
+### Week 3: 检索质量优化
+
+🎯 **目标**：检索准确率从 ~60% 提到 85%+，每个答案带引用。
+
+#### 📅 Day 1–2 — 混合检索
+
+- [ ] 写 `src/retrievers/hybrid.py`：
+  - BM25 (`rank-bm25`) + Vector 并行查询
+  - 用 Reciprocal Rank Fusion (RRF) 融合
+- [ ] BM25 索引建在 SQLite 或磁盘 pickle（启动时加载到内存）
+
+#### 📅 Day 3 — Rerank
+
+- [ ] 写 `src/retrievers/rerank.py`：
+  - 调用 Cohere Rerank v3
+  - 输入：query + top-20 candidates → 输出：top-5
+- [ ] 在 basic_rag chain 后加 rerank 节点
+
+#### 📅 Day 4 — Contextual Retrieval
+
+- [ ] 写 `src/processors/contextualize.py`：
+  - 对每个 chunk 用 `gpt-4o-mini` 生成 1–2 句"上下文摘要"
+  - 摘要拼到 chunk 前再 embedding（参考 Anthropic 2024 那篇文章）
+- [ ] 用 contextualized embedding 重建 KB（标记 `v0.3.0`）
+
+#### 📅 Day 5 — 引用强制 + 后处理
+
+- [ ] 写 `src/postprocess/citation.py`：
+  - prompt 强制 `[source · page]` 格式
+  - 解析 LLM 输出，校验是否引用了实际检索到的 chunk
+  - 没引用 → 重试 1 次，仍不引用 → 附 warning
+
+#### 📅 Day 6 — Golden 评测集 + RAGAs
+
+- [ ] 手写 **20 个 golden Q&A**（含期望答案 + 期望来源）→ `tests/eval/golden_qa.jsonl`
+- [ ] 写 `tests/eval/run_eval.py` 跑 RAGAs 四项指标：
+  - faithfulness（事实一致）
+  - answer_relevance
+  - context_precision
+  - context_recall
+- [ ] 跑一次 baseline，把数字记到 `docs/eval_report_w3.md`
+
+#### 📅 Day 7 — Buffer + Iterate
+
+- [ ] 根据评测结果调参（top_k / rerank top_n / contextualize prompt）
+
+#### 📦 本周产出文件
+
+```
+src/retrievers/hybrid.py
+src/retrievers/rerank.py
+src/processors/contextualize.py
+src/postprocess/citation.py
+tests/eval/golden_qa.jsonl
+tests/eval/run_eval.py
+docs/eval_report_w3.md
+```
+
+#### ✅ Week 3 验收
+
+- RAGAs **faithfulness > 0.85**，**context_precision > 0.80**
+- 答案全部带 `[source · page]` 格式
+- 评测报告 markdown 写出来
+
+#### 💰 本周成本
+
+| 项目 | 估算 |
+|---|---|
+| Contextual Retrieval 重建 KB | $8 |
+| 评测 + 调参测试 | $3 |
+| **小计** | **~$11** |
+
+---
+
+### Week 4: 中间层 + 自演化（L3）
+
+🎯 **目标**：从静态 KB → 自演化 KB。
+
+#### 📅 Day 1–2 — 分层摘要
+
+- [ ] 写 `src/summarizers/hierarchical.py`：
+  - **章节摘要**：用 `gpt-4o-mini` 总结同 section 的所有 chunk
+  - **文档摘要**：总结所有章节摘要
+  - **全局摘要**：总结所有文档摘要
+- [ ] 三层各自独立入 Qdrant collection：
+  - `summaries_section`
+  - `summaries_doc`
+  - `summaries_global`
+
+#### 📅 Day 3 — 多层检索
+
+- [ ] 写 `src/retrievers/multi_level.py`：
+  - 用 LLM 判断问题类型 → 选择 chunk 层 / summary 层 / 混合
+  - 或简单策略：先查 chunk，无好结果再 fallback 到 summary
+
+#### 📅 Day 4 — 文件监控 + 增量入库
+
+- [ ] 写 `src/evolution/watcher.py`（用 `watchdog`）：
+  - 监听 `data/raw/`
+  - 新文件 → 自动触发解析 + 入库 pipeline
+- [ ] 写 `scripts/run_watcher.py`（独立进程，长期运行）
+
+#### 📅 Day 5 — Feedback 表
+
+- [ ] 写 `src/feedback/collector.py`：
+  - SQLite `feedback` 表（chunk_id, score, reason, ts）
+  - `thumbs_up(chunk_ids)` / `thumbs_down(chunk_ids, reason)`
+- [ ] 把分数累加到 chunk metadata 的 `feedback_score` 字段
+
+#### 📅 Day 6 — Chunk Refiner
+
+- [ ] 写 `src/evolution/refiner.py`：
+  - 找出 `feedback_score < -2` 或 `quality_score < 0.5` 的 chunk
+  - 用 `gpt-4o-mini` 重写
+  - 一致性检测（LLM-as-judge 比较新旧）
+  - 通过 → 替换；不通过 → 标记 `needs_human_review`
+  - 旧 chunk 移到 `archive_chunks` collection（保留可回溯）
+- [ ] 写 `src/evolution/scheduler.py`（APScheduler）每周日凌晨跑
+
+#### 📅 Day 7 — Demo gif
+
+- [ ] 录一段 30s gif：「拖入新 PDF → 30 秒后能问到」
+
+#### 📦 本周产出文件
+
+```
+src/summarizers/hierarchical.py
+src/retrievers/multi_level.py
+src/evolution/watcher.py
+src/evolution/refiner.py
+src/evolution/scheduler.py
+src/feedback/collector.py
+scripts/run_watcher.py
+demo/week4_evolution.gif
+```
+
+#### ✅ Week 4 验收
+
+- 拖 1 份 PDF 到 `data/raw/v1/` → 30s 内自动入库
+- 点踩一个答案 → 重跑 refiner → 看到 chunk 真的被重写
+- 三个 summary collection 都存在并可查
+
+#### 💰 本周成本
+
+| 项目 | 估算 |
+|---|---|
+| 生成分层摘要（10 文档 × 三层） | $6 |
+| 测试 + refiner 试跑 | $3 |
+| **小计** | **~$9** |
+
+---
+
+### Week 5: 记忆层 + UI
+
+🎯 **目标**：从"命令行工具"到"能上手的产品"。
+
+#### 📅 Day 1 — 对话历史
+
+- [ ] 写 `src/memory/chat.py`：
+  - 用 LangChain `SQLChatMessageHistory`
+  - 按 `session_id` 区分会话
+- [ ] 改造 chain 为 `src/chains/conversational_rag.py`（支持多轮 + 历史拼接）
+
+#### 📅 Day 2 — 用户画像
+
+- [ ] 写 `src/memory/profile.py`：
+  - 每 10 个问答后触发一次 `gpt-4o-mini` 总结
+  - 存 SQLite `user_profile` 表（兴趣领域 / 常问题型 / 偏好风格）
+- [ ] 检索 + 生成时把 profile 拼进 system prompt
+
+#### 📅 Day 3–5 — Streamlit UI
+
+- [ ] 写 `app.py`：
+  - **侧边栏**：文件拖拽上传 + KB 版本切换 dropdown + 累计成本显示
+  - **主区**：对话框 + 历史消息
+  - **答案下方**：可点开的引用源（显示 PDF 页码 + 原文片段）
+  - **答案右上角**：👍 / 👎 按钮 + 反馈原因输入框
+  - **顶部**：当前用户画像摘要（折叠区）
+
+#### 📅 Day 6 — KB 版本快照
+
+- [ ] 写 `src/versioning/snapshot.py`：
+  - `create(version_tag)`：Qdrant snapshot + SQLite dump → `data/snapshots/{version}/`
+  - `restore(version_tag)`：反向操作 + 切换 collection alias
+- [ ] CLI：`python -m src.cli snapshot create v0.5.0`
+
+#### 📅 Day 7 — LangSmith 全覆盖 + Buffer
+
+- [ ] 确保所有 chain 都被 LangSmith trace 覆盖
+- [ ] README 加入 UI 截图
+
+#### 📦 本周产出文件
+
+```
+src/memory/chat.py
+src/memory/profile.py
+src/chains/conversational_rag.py
+src/versioning/snapshot.py
+app.py
+```
+
+#### ✅ Week 5 验收
+
+- `streamlit run app.py` 启动后能拖拽上传、对话、看引用、点踩、切换 KB 版本
+- 切换 KB v0.2.0 vs v0.5.0 同问题答案有明显差异
+- LangSmith 项目页能看到每个 session 的完整 trace
+
+#### 💰 本周成本
+
+| 项目 | 估算 |
+|---|---|
+| UI 调试 + 画像生成测试 | $5 |
+| **小计** | **~$5** |
+
+---
+
+### Week 6: 打磨 + 演示准备
+
+🎯 **目标**：从"能用"到"敢演示给部门看"。
+
+#### 📅 Day 1 — Docker 一键启动
+
+- [ ] 完善 `docker-compose.yml`（加 app 服务）
+- [ ] 写 `Dockerfile`（app 镜像）
+- [ ] 验证：`docker compose up` 一键启动全栈（Qdrant + app）
+
+#### 📅 Day 2–3 — 文档
+
+- [ ] `README.md`：项目介绍 + 截图 + 快速上手
+- [ ] `docs/architecture.md`：架构图（用本计划文档的 Mermaid）+ 模块说明
+- [ ] `docs/migration_to_corp_cloud.md`：参 §16，列每个服务的公司云替代品 + `.env` 改动量
+
+#### 📅 Day 4 — Demo 脚本
+
+- [ ] 写 `demo/demo_script.md`：按 §15 的 5 个 Wow Moments 排顺序
+- [ ] 准备 `demo/safe_questions.json`：30 个"已验证能答好"的问题
+- [ ] 找 1–2 位同事/朋友 dry-run 一次，记录被问倒的地方
+
+#### 📅 Day 5 — 录屏
+
+- [ ] 用 OBS / Snipping Tool 录 3 分钟 walkthrough
+- [ ] 上传到 OneDrive 私人盘 或 公司 SharePoint，准备分享链接
+
+#### 📅 Day 6 — PPT 准备
+
+- [ ] 10 页 slides 大纲：
+  1. 背景 / 当前痛点（公司 Langflow 的局限）
+  2. 解决方案（本系统的 4 个创新点）
+  3. 架构图
+  4. Demo（直接切到录屏 / 实时演示）
+  5. 评测数字（RAGAs 报告）
+  6. 成本（$55 全程）
+  7. 资源需求（云端部署需要什么）
+  8. ROI 算式（节省人力 vs 投入）
+  9. Roadmap（如何 scale 到团队/部门）
+  10. Q&A
+
+#### 📅 Day 7 — 正式演示 + 收尾
+
+- [ ] 30 分钟部门分享
+- [ ] 演示后立即写一份"反馈整理"邮件抄送 manager
+- [ ] `git tag v1.0 && git push --tags`
+- [ ] 喝杯咖啡 ☕
+
+#### 📦 本周产出文件
+
+```
+Dockerfile
+docs/architecture.md
+docs/migration_to_corp_cloud.md
+demo/demo_script.md
+demo/safe_questions.json
+demo/walkthrough.mp4
+demo/slides.pptx
+```
+
+#### ✅ Week 6 验收
+
+- 别人 `git clone + docker compose up` 能在自己机器跑起来
+- 你能 5 分钟内完整演示
+- 部门 30 分钟分享会顺利进行 + 收到至少 1 条具体的资源支持承诺
+
+#### 💰 本周成本
+
+| 项目 | 估算 |
+|---|---|
+| 打磨调试 | $3 |
+| **小计** | **~$3** |
+
+---
+
+### 📊 全程累计成本
+
+| 周 | 当周 | 累计 |
+|---|---|---|
+| Week 0 | $20 | $20 |
+| Week 1 | $1.5 | $21.5 |
+| Week 2 | $5 | $26.5 |
+| Week 3 | $11 | $37.5 |
+| Week 4 | $9 | $46.5 |
+| Week 5 | $5 | $51.5 |
+| Week 6 | $3 | $54.5 |
+| **总计** | | **~$55** |
+
+✅ **在 §0 TL;DR 承诺的 < $100 范围内**，且预留 ~$45 buffer 应对意外重跑/重建。
+
+---
+
+### 🎯 全程进度看板（可打印贴墙上）
+
+```
+Week 0  [ ][ ][ ]            准备期 · $20
+Week 1  [ ][ ][ ][ ][ ][ ][] MVP · $1.5
+Week 2  [ ][ ][ ][ ][ ][ ][] 多模态 · $5
+Week 3  [ ][ ][ ][ ][ ][ ][] 检索质量 · $11
+Week 4  [ ][ ][ ][ ][ ][ ][] 自演化 · $9
+Week 5  [ ][ ][ ][ ][ ][ ][] 记忆+UI · $5
+Week 6  [ ][ ][ ][ ][ ][ ][] 演示 · $3
+                              累计 $55
+```
 
 ---
 
@@ -844,10 +1477,11 @@ PER_DOC_BUDGET_USD=0.5
 
 ---
 
-**文档版本**: v1.1 · 2026-05-28  
+**文档版本**: v1.2 · 2026-05-28  
 **修订记录**:
 
 - v1.0 (2026-05-28) 初始版本
 - v1.1 (2026-05-28) 新增 §18 服务清单 / API 总览；原 §18/§19 顺延为 §19/§20
+- v1.2 (2026-05-28) 新增文档目录；§17 从"Day 1 三件事"扩展为"Step-by-Step 周计划执行手册"（Week 0~6 逐日动作 / 命令 / 验收 / 成本）
 
 **下次修订触发**: Week 1 结束 / 任何需求变更
